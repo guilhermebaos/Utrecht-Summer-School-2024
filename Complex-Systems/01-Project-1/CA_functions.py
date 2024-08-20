@@ -109,10 +109,9 @@ def CA_simulator(par, sim_set, CA_evolution):
         for i in range(M):
             for k in range(N):
                 id = sub2ind(N,M,i,k)
-                Anext[k,i] = CA_evolution(i,k,np.array(A),neighbours_a[id],neighbours_i[id], w_a, w_i)
+                Anext[k, i] = CA_evolution(i, k, np.array(Atotal[-1]), neighbours_a[id], neighbours_i[id], w_a, w_i)
         
-        A = np.copy(Anext)
-        Atotal += [np.copy(A)]
+        Atotal += [np.copy(Anext)]
             
     
     return Atotal
