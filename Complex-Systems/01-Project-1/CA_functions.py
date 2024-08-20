@@ -103,19 +103,16 @@ def CA_simulator(par, sim_set, CA_evolution):
     A = A0
     
     Anext = np.zeros((N,M))
-    Atotal = [A]
-    for t in range(timesteps):
+    Atotal = [np.copy(A)]
+    for _ in range(timesteps):
         # Loop over cells and apply evolution rules
         for i in range(M):
             for k in range(N):
                 id = sub2ind(N,M,i,k)
                 Anext[k,i] = CA_evolution(i,k,np.array(A),neighbours_a[id],neighbours_i[id], w_a, w_i)
         
-        A = Anext
-
-        # Save a picture 
-        if t % sim_set.plot_interval == 0:
-            Atotal += [A]
+        A = np.copy(Anext)
+        Atotal += [np.copy(A)]
             
     
     return Atotal
