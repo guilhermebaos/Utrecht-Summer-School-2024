@@ -27,7 +27,7 @@ def sub2ind(N,M,x,y):
     id = y * N + x
     return id
 
-def CA_simulator(par, sim_set, CA_evolution):
+def CA_simulator(par, CA_evolution, stop_steady=False):
     # THE MAIN FUNCTION THAT PERFORMS THE SIMULATION AND CALLS THE RIGHT FUNCTIONS FOR TIMESTEP AND VISUALISATIONS
 
     # Obtain parameters
@@ -40,7 +40,7 @@ def CA_simulator(par, sim_set, CA_evolution):
     w_a = par.w_a
     w_i = par.w_i
     
-    timesteps = sim_set.timesteps
+    timesteps = par.timesteps
     
     ## Pre-calculation of the neighbours within certain radius (this makes the simulation faster)
 
@@ -103,6 +103,7 @@ def CA_simulator(par, sim_set, CA_evolution):
     A = A0
     
     Anext = np.zeros((N,M))
+    Azero = np.zeros((N,M))
     Atotal = [np.copy(A)]
     for _ in range(timesteps):
         # Loop over cells and apply evolution rules
@@ -112,7 +113,9 @@ def CA_simulator(par, sim_set, CA_evolution):
                 Anext[k, i] = CA_evolution(i, k, np.array(Atotal[-1]), neighbours_a[id], neighbours_i[id], w_a, w_i)
         
         Atotal += [np.copy(Anext)]
-            
+
+        if stop_steady and np.all((Atotal[-1] - Atotal[-2]) == Azero):
+            break
     
     return Atotal
         
