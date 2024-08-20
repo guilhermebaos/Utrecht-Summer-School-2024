@@ -27,7 +27,7 @@ def sub2ind(N,M,x,y):
     id = y * N + x
     return id
 
-def CA_simulator(par,sim_set):
+def CA_simulator(par, sim_set, CA_evolution):
     # THE MAIN FUNCTION THAT PERFORMS THE SIMULATION AND CALLS THE RIGHT FUNCTIONS FOR TIMESTEP AND VISUALISATIONS
 
     # Obtain parameters
@@ -35,22 +35,15 @@ def CA_simulator(par,sim_set):
     M = par.M
     p = par.p
     
-    CA_evolution = par.CA_evolution # The evolution rule
-    
     R_a = par.R_a
     R_i = par.R_i
     w_a = par.w_a
     w_i = par.w_i
     
     timesteps = sim_set.timesteps
-
-    ## Initialisation of the grid
-    A0 = ( np.random.rand(N,M) < p )
-    A0 = A0.astype(int)
     
     ## Pre-calculation of the neighbours within certain radius (this makes the simulation faster)
 
-    
     # Build proximity matrices
     prox_act = []
     prox_inh = []
@@ -100,6 +93,11 @@ def CA_simulator(par,sim_set):
             xs_i.append(pos[1])
             ys_i.append(pos[0])
         neighbours_i.append( ( tuple(ys_i), tuple(xs_i) ) )
+
+
+    ## Initialisation of the grid
+    A0 = ( np.random.rand(N,M) < p )
+    A0 = A0.astype(int)
 
     ## Actual simulation
     A = A0
