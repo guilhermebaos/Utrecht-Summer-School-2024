@@ -44,7 +44,7 @@ def rungekutta(thetaOld, omega, K, A, dt):
 
 
 
-def Kuramoto_simulator(par,sim_set):
+def Kuramoto_simulator(par, sim_set, omega=None, theta0=None):
     # THE MAIN FUNCTION THAT PERFORMS THE SIMULATION AND CALLS THE RIGHT FUNCTIONS FOR TIMESTEP AND VISUALISATIONS
     
     ## Obtain parameters
@@ -79,8 +79,12 @@ def Kuramoto_simulator(par,sim_set):
     times = np.arange(0,T,dt) # in MATLAB 0:dt:T
     
     # initial conditions
-    omega = np.random.rand(N) # uniform distribution between 0 and 1 for frequencies
-    theta0 = np.random.normal(0,1,N) # random normal initial conditions
+    if omega is None:
+        omega = np.random.rand(N) # uniform distribution between 0 and 1 for frequencies
+    
+    if theta0 is None:
+        theta0 = np.random.normal(0,1,N) # random normal initial conditions
+    
     theta = theta0
     
     # for saving
@@ -92,7 +96,7 @@ def Kuramoto_simulator(par,sim_set):
     for j in range(len(times)):
         theta = rungekutta(theta, omega, K, A, dt)
         
-        if updatePlot and j%sim_set.plot_interval == 0:
+        if updatePlot and j % sim_set.plot_interval == 0:
             metronomePlot.set_data(xPositions + 0.1 * np.cos(theta),yPositions + 0.1 * np.sin(theta))
             fig_graph.canvas.draw()
             fig_graph.canvas.flush_events()
@@ -103,16 +107,17 @@ def Kuramoto_simulator(par,sim_set):
     ## Plotting after the simulation
     if plotEvolutions:
         figs, axs = plt.subplots(1,2, figsize = (10,5))
+        plt.title("Simulation of Oscilators")
         ax_thetas = axs[0]
         ax_orderpar = axs[1]
         for k in np.linspace(0, len(thetas)-1, 20, dtype='int'):
             ax_thetas.plot(times, thetas[k,:]%(2*np.pi))
-        ax_thetas.set_xlabel('t')
-        ax_thetas.set_ylabel('theta_i (mod 2 pi)')
+        ax_thetas.set_xlabel('$t$')
+        ax_thetas.set_ylabel('$\\theta_i$ (mod $2 \\pi$)')
         
         ax_orderpar.plot(times, orderPars)
-        ax_orderpar.set_xlabel('t')
-        ax_orderpar.set_ylabel('order parameter r')
+        ax_orderpar.set_xlabel('$t$')
+        ax_orderpar.set_ylabel('order parameter $r$')
         
     return thetas, orderPars
         
