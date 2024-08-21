@@ -97,7 +97,7 @@ def Kuramoto_simulator(par,sim_set):
             fig_graph.canvas.draw()
             fig_graph.canvas.flush_events()
         
-        thetas[:,j] = theta;
+        thetas[:,j] = theta
         orderPars[j] = orderParameter(theta)
         
     ## Plotting after the simulation
@@ -114,7 +114,7 @@ def Kuramoto_simulator(par,sim_set):
         ax_orderpar.set_xlabel('t')
         ax_orderpar.set_ylabel('order parameter r')
         
-    return [thetas, orderPars]
+    return thetas, orderPars
         
         
     
