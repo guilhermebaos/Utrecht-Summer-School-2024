@@ -83,7 +83,7 @@ def Kuramoto_simulator(par, sim_set, omega=None, theta0=None):
         omega = np.random.rand(N) # uniform distribution between 0 and 1 for frequencies
     
     if theta0 is None:
-        theta0 = np.random.normal(0,1,N) # random normal initial conditions
+        theta0 = np.random.normal(0, 1, N) # random normal initial conditions
     
     theta = theta0
     
